@@ -1,10 +1,8 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
-# from langchain.text_splitter import CharacterTextSplitter
 from langchain_text_splitters import CharacterTextSplitter
-# from langchain.embeddings import OpenAIEmbeddings  # أو أي مزود Embedding لديك
-from langchain_openai import OpenAIEmbeddings
-# from langchain.vectorstores import Chroma
+from langchain_community.embeddings import HuggingFaceInstructEmbeddings
 from langchain_community.vectorstores import Chroma
+
 import pdfplumber
 import docx
 import os
@@ -21,9 +19,12 @@ api_key = os.getenv("API_KEY_OPENAI")
 app = FastAPI()
 
 
+hf_embeddings = HuggingFaceInstructEmbeddings(
+    model_name="hkunlp/instructor-large",
+    model_kwargs={"device": "cpu"}  
+)
 
-
-chroma_db = Chroma(persist_directory="chroma_db", collection_name="documents", embedding_function=OpenAIEmbeddings(api_key=api_key))
+chroma_db = Chroma(persist_directory="chroma_db", collection_name="documents", embedding_function=hf_embeddings)
 
 MAX_FILE_SIZE = 5 * 1024 * 1024
 

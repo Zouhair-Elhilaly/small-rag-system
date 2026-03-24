@@ -6,5 +6,8 @@ pdfplumber
 python-docx
 requests
 langchain-text-splitters
-langchain-openai
 langchain-community
+langchain
+InstructorEmbedding 
+sentence-transformers
+langchain-huggingface
